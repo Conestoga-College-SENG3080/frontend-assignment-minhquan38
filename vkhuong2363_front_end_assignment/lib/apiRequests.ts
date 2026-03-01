@@ -42,3 +42,18 @@ export async function fetchPostBySlug(token:string, slug:string){
 
   return response.json();
 }
+
+export async function fetchPostByID(token:string, id:string){
+  const response = await fetch(`https://awf-api.lvl99.dev/posts/${id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Fail to fetch post");
+  }
+
+  return response.json();
+}

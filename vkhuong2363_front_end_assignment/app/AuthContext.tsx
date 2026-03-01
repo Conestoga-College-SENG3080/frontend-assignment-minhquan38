@@ -1,9 +1,8 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { User } from "@/types/user";
+import { User } from "@/models/user";
 import { login } from "@/lib/apiRequests";
-import { saveAuth} from "@/lib/localStorage";
 
 type AuthContextType = {
   user: User | null;
@@ -19,7 +18,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const authenticate = async () => {
     try {
       const data = await login("vkhuong2363", "8822363");
-      saveAuth(data.access_token);
       setUser(data.user);
       setToken(data.access_token);
     } 

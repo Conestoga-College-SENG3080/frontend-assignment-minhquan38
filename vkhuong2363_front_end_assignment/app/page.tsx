@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Post } from "@/types/post";
-import { Forum } from "@/types/forum";
+import { Post } from "@/models/post";
+import { Forum } from "@/models/forum";
 import { fetchForums, fetchPostBySlug } from "@/lib/apiRequests";
 import { toggleFavorite, getFavorites } from "@/lib/localStorage";
 import { useAuth } from "./AuthContext";
+import PostList from "./components/PostList";
 
 export default function Home() {
   const { token } = useAuth();
@@ -67,6 +68,7 @@ const handleToggleFavorite = (postId: string) => {
 
   return (
     <div style={{ padding: 20 }}>
+      <h1><b>Posts</b></h1>
       {/* Forum Dropdown */}
       <div style={{ marginBottom: 20 }}>
         <select
@@ -83,44 +85,11 @@ const handleToggleFavorite = (postId: string) => {
       </div>
 
       {/* Show a list of 10 post based on the chosen forum */}
-      
-      {posts.map((post) => {
-      const isFav = favorites.includes(post.id);
-      return (
-          <div
-            key={post.id}
-            style={{
-              background: "white",
-              padding: 20,
-              borderRadius: 8,
-              marginTop: 20,
-              boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
-            }}
-          >
-            <h2><b>{post.title}</b></h2>
-            <p style={{ color: "#555" }}>
-              {post.content}
-            </p>
-
-            <div style={{ fontSize: 12, color: "#999" }}>
-              Author: {post.author} | Likes: {post.totalLikes} | Read: {post.totalRead}
-            </div>
-
-             <button
-                onClick={() => handleToggleFavorite(post.id)}
-                style={{
-                  marginTop: 10,
-                  padding: "6px 12px",
-                  borderRadius: 6,
-                  border: "none",
-                  cursor: "pointer",
-                  background: isFav ? "#ff0202" : "#0074e7",
-                }}>
-              {isFav ? "Remove Favorite" : "Add Favorite"}
-            </button>
-          </div>
-        );
-      })}
+      <PostList
+        posts={posts}
+        favorites={favorites}
+        onToggleFavorite={handleToggleFavorite}
+      />
     </div>
   );
 }

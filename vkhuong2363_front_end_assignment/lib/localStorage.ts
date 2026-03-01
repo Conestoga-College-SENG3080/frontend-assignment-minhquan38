@@ -1,15 +1,6 @@
-import { User } from "@/types/user";
-
-const TOKEN_KEY = "token";
-const USER_KEY = "user";
 const FAVORITES_KEY = "favorites";
 
-export function saveAuth(token: string) {
-  localStorage.setItem(TOKEN_KEY, token);
-}
-
 // Post favorite
-
 export function getFavorites(): string[] {
   const stored = localStorage.getItem(FAVORITES_KEY);
   return stored ? JSON.parse(stored) : [];
@@ -37,8 +28,4 @@ export function toggleFavorite(postId: string): string[] {
   // Finally save the update list of what is added and remove
   saveFavorites(updated);
   return updated; 
-}
-
-function isFavorite(postId: string): boolean {
-  return getFavorites().includes(postId);
 }
