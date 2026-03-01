@@ -25,3 +25,30 @@ body {
   background-color: #f5f7fa;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.navbar {
+  background-color: #000; /* black background */
+  color: #fff;            /* white text */
+  padding: 10px 20px;     /* some spacing */
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menu {
+  display: flex;
+  gap: 20px; /* space between links */
+}
+
+.menu a {
+  color: #fff;          /* white text for links */
+  text-decoration: none; /* remove underline */
+  font-weight: 500;
+}
+
+.menu a:hover {
+  text-decoration: underline; /* optional hover effect */
+}

@@ -6,7 +6,8 @@ import { User } from "@/types/user";
 import { Post } from "@/types/post";
 import {Forum} from "@/types/forum"
 import { login, fetchForums, fetchPostBySlug } from "@/lib/apiRequests";
-import { saveAuth, getStoredUser} from "@/lib/userInfoStorage";
+import { saveAuth, getStoredUser} from "@/lib/localStorage";
+import { toggleFavorite, getFavorites} from "@/lib/localStorage";
 
 type JWTPayload = { exp?: number; [key: string]: any };
 
@@ -18,6 +19,7 @@ export default function Home() {
   const [forums, setForums] = useState<Forum[]>([]);
   const [selectedSlug, setSelectedSlug] = useState("");
   const [posts, setPosts] = useState<Post[]>([]);
+  const [favorites, setFavorites] = useState<string[]>([]);
 
   /* =========================
      JWT Validation
@@ -101,9 +103,18 @@ export default function Home() {
     loadPosts();
   }, [selectedSlug]);
 
+  useEffect(() => {
+  setFavorites(getFavorites());
+}, []);
+
+const handleToggleFavorite = (postId: string) => {
+  const updated = toggleFavorite(postId);
+  setFavorites(updated);
+};
+  
+
   return (
     <div style={{ padding: 20 }}>
-      <h1>Main Page</h1>
 
       {user ? (<h2> Welcome {user.firstName} {user.lastName}</h2>) : (<h2>Authenticating...</h2>)}
 
@@ -123,7 +134,9 @@ export default function Home() {
       </div>
 
       {/* Show a list of 10 post based on the chosen forum */}
+      
       {posts.map((post) => {
+      const isFav = favorites.includes(post.id);
       return (
           <div
             key={post.id}
@@ -135,7 +148,7 @@ export default function Home() {
               boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
             }}
           >
-            <h3>{post.title}</h3>
+            <h2><b>{post.title}</b></h2>
             <p style={{ color: "#555" }}>
               {post.content}
             </p>
@@ -143,6 +156,19 @@ export default function Home() {
             <div style={{ fontSize: 12, color: "#999" }}>
               Author: {post.author} | Likes: {post.totalLikes} | Read: {post.totalRead}
             </div>
+
+             <button
+                onClick={() => handleToggleFavorite(post.id)}
+                style={{
+                  marginTop: 10,
+                  padding: "6px 12px",
+                  borderRadius: 6,
+                  border: "none",
+                  cursor: "pointer",
+                  background: isFav ? "#ff0202" : "#0074e7",
+                }}>
+              {isFav ? "Remove Favorite" : "Add Favorite"}
+            </button>
           </div>
         );
       })}
