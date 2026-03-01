@@ -52,3 +52,9 @@ body {
 .menu a:hover {
   text-decoration: underline; /* optional hover effect */
 }
+
+.user-info {
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+}

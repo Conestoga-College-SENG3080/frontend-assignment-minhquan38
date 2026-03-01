@@ -1,19 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {jwtDecode} from "jwt-decode";
-import { User } from "@/types/user";
 import { Post } from "@/types/post";
-import {Forum} from "@/types/forum"
-import { login, fetchForums, fetchPostBySlug } from "@/lib/apiRequests";
-import { saveAuth, getStoredUser} from "@/lib/localStorage";
-import { toggleFavorite, getFavorites} from "@/lib/localStorage";
-
-type JWTPayload = { exp?: number; [key: string]: any };
+import { Forum } from "@/types/forum";
+import { fetchForums, fetchPostBySlug } from "@/lib/apiRequests";
+import { toggleFavorite, getFavorites } from "@/lib/localStorage";
+import { useAuth } from "./AuthContext";
 
 export default function Home() {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  const { token } = useAuth();
 
   // Forum inputs
   const [forums, setForums] = useState<Forum[]>([]);
@@ -22,54 +17,11 @@ export default function Home() {
   const [favorites, setFavorites] = useState<string[]>([]);
 
   /* =========================
-     JWT Validation
-  ========================== */
-  const isTokenValid = (t: string | null) => {
-    if (!t) return false;
-    try {
-      const payload = jwtDecode<JWTPayload>(t);
-      if (!payload.exp) return false;
-      return Date.now() / 1000 < payload.exp;
-    } catch {
-      return false;
-    }
-  };
-
- /* =========================
-     Authentication
-  ========================== */
-  const authenticate = async () => {
-    const storedToken = localStorage.getItem("token");
-    console.log(storedToken);
-
-    if (!isTokenValid(storedToken)) {
-      try {
-        const data = await login("vkhuong2363", "8822363"); 
-        saveAuth(data.access_token, data.user);
-        setUser(data.user);
-        setToken(data.access_token);
-      } 
-      catch (err) {
-        console.error("Failed to authenticate:", err);
-      }
-    } 
-    else {
-      setToken(storedToken);
-      const storedUser = getStoredUser();
-      setUser(storedUser);
-    }
-  };
-
-  useEffect(() => {
-    authenticate();
-  }, []);
-
-    /* =========================
      Load Forums After Auth
   ========================== */
   useEffect(() => {
     if (!token) return;
-
+    console.log(token);
     const loadForums = async () => {
     try {
       const data: Forum[] = await fetchForums(token);
@@ -101,7 +53,7 @@ export default function Home() {
     };
 
     loadPosts();
-  }, [selectedSlug]);
+  }, [selectedSlug, token]);
 
   useEffect(() => {
   setFavorites(getFavorites());
@@ -115,9 +67,6 @@ const handleToggleFavorite = (postId: string) => {
 
   return (
     <div style={{ padding: 20 }}>
-
-      {user ? (<h2> Welcome {user.firstName} {user.lastName}</h2>) : (<h2>Authenticating...</h2>)}
-
       {/* Forum Dropdown */}
       <div style={{ marginBottom: 20 }}>
         <select

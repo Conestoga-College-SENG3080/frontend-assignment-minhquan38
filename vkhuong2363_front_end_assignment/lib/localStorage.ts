@@ -4,14 +4,8 @@ const TOKEN_KEY = "token";
 const USER_KEY = "user";
 const FAVORITES_KEY = "favorites";
 
-export function saveAuth(token: string, user: User) {
+export function saveAuth(token: string) {
   localStorage.setItem(TOKEN_KEY, token);
-  localStorage.setItem(USER_KEY, JSON.stringify(user));
-}
-
-export function getStoredUser(): User | null {
-  const storedUser = localStorage.getItem(USER_KEY);
-  return storedUser ? JSON.parse(storedUser) : null;
 }
 
 // Post favorite
