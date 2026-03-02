@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  basePath: "/vkhuong2363_front_end_assignment",
+  basePath: "/frontend-assignment-minhquan38",
   output: "export",  
   reactStrictMode: true,
 };
