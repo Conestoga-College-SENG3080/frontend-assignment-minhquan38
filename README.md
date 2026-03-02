@@ -8,7 +8,12 @@ https://github.com/Conestoga-College-SENG3080/frontend-assignment-minhquan38
 
 ## Getting Started
 
-First, run the development server:
+First, install packages:
+```bash
+npm install
+```
+
+Second, run the development server:
 
 ```bash
 npm run dev
