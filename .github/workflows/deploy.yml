@@ -35,6 +35,21 @@ jobs:
         env:
           NODE_ENV: production
 
+      - name: Check Next.js config
+        run: |
+          echo "=== Checking what config files exist ==="
+          ls -la next.config.* || echo "No next.config files found"
+          echo ""
+          echo "=== next.config.ts content ==="
+          cat next.config.ts
+          echo ""
+          echo "=== Checking .next directory ==="
+          ls -la .next/
+          echo ""
+          echo "=== Manual Static Export ==="
+          npx next export
+          echo ""
+      
       - name: Debug - Check for out directory
         run: |
           echo "Current directory"
