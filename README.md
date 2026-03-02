@@ -1,5 +1,11 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Deployed app link
+https://conestoga-college-seng3080.github.io/frontend-assignment-minhquan38/
+
+## Github classroom link
+https://github.com/Conestoga-College-SENG3080/frontend-assignment-minhquan38
+
 ## Getting Started
 
 First, run the development server:
