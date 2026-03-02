@@ -33,8 +33,12 @@ jobs:
       - name: Build with Next.js 🏗️
         run: npm run build
 
-      - name: Check if out folder exists 📂
+      - name: Check if out folder exists 
         run: ls -la
+      
+      - name: Show next.config.js content
+        run: cat next.config.js
+      
 
       - name: Upload artifact 📡
         uses: actions/upload-pages-artifact@v3
